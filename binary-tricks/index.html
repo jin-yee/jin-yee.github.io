@@ -27,7 +27,7 @@
             text-transform: capitalize;
         }
 
-        .paragraph {
+        p {
             text-align: justify;
         }
     </style>
@@ -48,13 +48,13 @@
         <div>
             <div>
                 <h2 class="general-title">Introduction</h2>
-                <p class="paragraph">Here I share a list of binary operations I have found/seen from books and codes
+                <p>Here I share a list of binary operations I have found/seen from books and codes
                     from other programmers, that
                     I find them intrigued and useful (at least for me).</p>
             </div>
             <div>
                 <h2 class="general-title">Testing if a Number is even</h2>
-                <p class="paragraph">
+                <p>
                     While many would use modulus 2, to test a number is even or not, you simply check the least
                     significant bit (lsb) of the number is 1
                     (odd) or 0 (even). For example,
@@ -64,21 +64,21 @@
             </div>
             <div>
                 <h2 class="general-title">"Fast" Modulus</h2>
-                <p class="paragraph">
+                <p>
                     This is actually an extension of the knowledge from the last part. In the last section,
                     <code>AND</code> 1 is used to replaced the modulus of 2, to test if number is even (divisible by 2).
                 </p>
-                <p class="paragraph">But I would like to take this furthur a bit, by understanding that if a number
+                <p>But I would like to take this furthur a bit, by understanding that if a number
                     \(x\) is not divisible by \(y\), the remainder \(r\) of the division will consists of integer in the
                     range of \(r \in [0,y-1] \). For example, 13 is not divisible by 5, and the remainder is 3, 14 is
                     not too and remainder yields 4.
                 </p>
-                <p class="paragraph">
+                <p>
                     Here we observe one pattern, for number that's \(2^n\) where \(n\) is positive integer, if you take
                     any numbers divided by it, the remainder will be in range of \([0, 2^n - 1]\). For example, is the
                     divisor is 8, the remainder will be one of \(0, 1, 2, ... 7\).
                 </p>
-                <p class="paragraph">
+                <p>
                     We can observe, that when getting remainder of a number divided by divisor that's \(2^n\), or
                     going back to our topic,
                     <b>to
@@ -87,19 +87,19 @@
                     <code>AND</code> operator, or namely
                     \[x \mod 2^n \equiv x \land 2^n - 1\]
                 </p>
-                <p class="paragraph">The <code>AND</code> \(2^n - 1\) will mask out every bit that's before \(2^n\).
+                <p>The <code>AND</code> \(2^n - 1\) will mask out every bit that's before \(2^n\).
                     Let's consider the following examples:
                     $$ 156 \mod 16 = 12 \equiv 156 \land (16 - 1) = 12$$
                     $$ \begin{array} {|r|r|}\hline & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\ \hline \land & 0 & 0 & 0 & 0 & 1 &
                     1
                     & 1 & 1 \\ \hline & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 \\ \hline \end{array}$$
                 </p>
-                <p class="paragraph">So you just turn a long division problem to a bitwise operation. That's the power
+                <p>So you just turn a long division problem to a bitwise operation. That's the power
                     of 2!</p>
             </div>
             <div>
                 <h2 class="general-title">Taking out the least significant 1</h2>
-                <p class="paragraph">
+                <p>
                     We all know 2's complement, just a reminder, it's used to represent negative number in computers.
                     Here is the procedure of getting a 2's complement of a number
                 <ol>
@@ -124,13 +124,13 @@
             </div>
             <div>
                 <h2 class="general-title">Padding</h2>
-                <p class="paragraph">
+                <p>
                     In programming quite often you will see problem such as finding the required number of character(s)
                     ,\(n\), to pad in front of a string of length \(s\) such that \(n + s\) is a multiple of some
                     integer \(i\).
                     For example, in AES-128 encryption, which requires one to provide a plain text of multiple of 16
                     bytes, and if not you have to pad it until its length is multiple of 16 bytes.
-                <p class="paragraph">
+                <p>
                     Provided such problem statement, one would naturally comes out with the following simple solution:
                 <ol>
                     <li>Starting from its current length \(s\), check if it's multiple of the integer \(i\) by using the
@@ -139,11 +139,11 @@
                         \(i\)</li>
                 </ol>
                 </p>
-                <p class="paragraph">
+                <p>
                     This approach is not that bad, after all, the worst we could go for the 16 bytes case is to iterate
                     15 times.
                 </p>
-                <p class="paragraph">
+                <p>
                     However, if the <b>final length of the padded array/text/string is a multiple of power of 2</b>, the
                     following bitwise
                     operation can gives you the required pad length in a one line
@@ -151,10 +151,10 @@
                     The left operand of <code>AND</code> is the 2's complement of the original string length \(s\);
                     \(i\) is the "block size" that will wholly divide the final length of the string
                 </p>
-                <p class="paragraph" style="font-weight: bold;">
+                <p style="font-weight: bold;">
                     One thing to note that this only works, if the final length of entity has to be multiple of \(2^n\).
                 </p>
-                <p class="paragraph">
+                <p>
                     For example, an string of length 13, has to be padded with '0' until its length is of multiple of 16
                     (\(2^4\)), find the number of '0' required to pad.
                     \[\begin{align}
@@ -164,7 +164,7 @@
                     &= 3_{10}
                     \end{align}\]
                 </p>
-                <p class="paragraph">So we need to pad another 3 character to make 13 becomes 16, which makes sense.
+                <p>So we need to pad another 3 character to make 13 becomes 16, which makes sense.
                     Reader can try for other length and see the result.</p>
             </div>
         </div>

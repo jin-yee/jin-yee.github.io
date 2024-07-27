@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jin Yee Chuang | Byte To Decimal</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            font-family: 'Roboto';
+            font-size: 14px;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 1rem 2rem;
+        }
+
+        .general-title {
+            text-transform: capitalize;
+        }
+
+        p {
+            text-align: justify;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <nav>
+            <span><a href="/">Home</a></span>
+        </nav>
+        <header>
+            <h1>Bytes to Decimal String</h1>
+            <h2>Last Update</h2>
+            <ul>
+                <li>July 28 2024 - Initial commit</li>
+            </ul>
+        </header>
+        <div>
+            <div>
+                <h2 class="general-title">Introduction</h2>
+                <p>I was assigned to write a function (in C) that converts an array of bytes into a decimal string. The
+                    0-th
+                    index (first element) of
+                    the array is the most significant byte (MSB) and the last element in the array is the least
+                    significant byte (LSB). The length of the array could grow really big, at first it was saying that
+                    16 bytes is needed. So we cannot iterate each bytes and multiply them by 256 and store in the stack,
+                    the stack will definitely overflow.</p>
+                <p>While I'm advised to use ChatGPT to generate the helper function, I found it generated some wrong
+                    code and doesn't understand that the byte's sequence. I found <a
+                        href="https://stackoverflow.com/questions/2423902/convert-an-array-of-bytes-into-one-decimal-number-as-a-string">a
+                        guy from Stack Overflow</a>
+                    answering
+                    this question, but he only provided the overall idea (which I really appreciate) but not code in C.
+                </p>
+            </div>
+            <div>
+                <h2 class="general-title">The Code in C</h2>
+                <p class="paragraph">
+                    *This code assuming this the bit length is multiple of 8.
+                <pre>
+void bytes_to_dec_string(uint8_t *byte_array, int bit_length, char *result)
+{
+    uint32_t carry_over = 0;
+    uint8_t current[40] = {0};
+    uint8_t current_size = 0;
+    uint8_t temp[40] = {0};
+    uint8_t *start = NULL;
+    uint8_t byte_length = bit_length / 8;
+    uint8_t j = 0;
+    if (byte_length == 0)
+        return;
+    // discard all the leading 0s
+    while (*byte_array++ == 0)
+    {
+        byte_length--;
+    }
+    start = --byte_array;
+    for (uint8_t i = 0; i < byte_length; i++)
+    {
+        if (current_size == 0)
+        {
+            current[0] = *start;
+            current_size++;
+            start++;
+            continue;
+        }
+        j = 0;
+        carry_over = current[j] * 256;
+        while (carry_over)
+        {
+            temp[j++] = carry_over % 10;
+            carry_over /= 10;
+        }
+        memcpy(current, temp, j);
+        current_size = j;
+        j = 0;
+        carry_over = current[j] + *start;
+        while (carry_over)
+        {
+            temp[j++] = carry_over % 10;
+            carry_over /= 10;
+            carry_over += current[j];
+        }
+        memcpy(current, temp, j);
+        current_size = j;
+        start++;
+    }
+    j = 0;
+    for (int i = current_size; i >= 0; i--)
+    {
+        sprintf(result + j, "%d", current[i]);
+        j++;
+    }
+}
+</pre>
+                </p>
+            </div>
+        </div>
+
+        <footer>
+            <hr />
+            <small>
+                Jin Yee Chuang | 2023 - <span id="year_now"></span> | No rights reserved | Who cares anyway
+            </small>
+            <hr />
+        </footer>
+        <nav>
+            <span><a href="/">Home</a></span>
+        </nav>
+    </main>
+</body>
+
+<script>
+    const yearContainer = document.getElementById("year_now");
+    yearContainer.innerText = new Date().getFullYear();
+</script>
+
+</html>
