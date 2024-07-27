@@ -90,10 +90,12 @@
                 <p class="paragraph">The <code>AND</code> \(2^n - 1\) will mask out every bit that's before \(2^n\).
                     Let's consider the following examples:
                     $$ 156 \mod 16 = 12 \equiv 156 \land (16 - 1) = 12$$
-                    $$ \begin{array} {|r|r|}\hline & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\ \hline \land & 0 & 0 & 0 & 0 & 1 & 1
+                    $$ \begin{array} {|r|r|}\hline & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\ \hline \land & 0 & 0 & 0 & 0 & 1 &
+                    1
                     & 1 & 1 \\ \hline & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 \\ \hline \end{array}$$
                 </p>
-                <p class="paragraph">So you just turn a long division problem to a bitwise operation. That's the power of 2!</p>
+                <p class="paragraph">So you just turn a long division problem to a bitwise operation. That's the power
+                    of 2!</p>
             </div>
             <div>
                 <h2 class="general-title">Taking out the least significant 1</h2>
@@ -115,7 +117,8 @@
                 \begin{array} {|r|r|}\hline & 0 & 1 & 1 & 0 \\ \hline \land & 1 & 0 & 1 & 0 \\ \hline & 0 & 0 & 1 & 0 \\
                 \hline \end{array}
 
-                The result is \(2_{10}\) or \(0010_{2}\), if not surprised, the least significant 1 of 6 is actually at the
+                The result is \(2_{10}\) or \(0010_{2}\), if not surprised, the least significant 1 of 6 is actually at
+                the
                 position where \(2^1\)
                 </p>
             </div>
