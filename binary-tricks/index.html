@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jin Yee Chuang | Binary Trick</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            font-family: 'Roboto';
+            font-size: 14px;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 1rem 2rem;
+        }
+
+        .general-title {
+            text-transform: capitalize;
+        }
+
+        .paragraph {
+            text-align: justify;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <nav>
+            <span><a href="/">Home</a></span>
+        </nav>
+        <header>
+            <h1>Binary Tricks</h1>
+            <h2>Last Update</h2>
+            <ul>
+                <li>July 27 2024 - Initial commit</li>
+            </ul>
+        </header>
+        <div>
+            <div>
+                <h2 class="general-title">Introduction</h2>
+                <p class="paragraph">Here I share a list of binary operations I have found/seen from books and codes
+                    from other programmers, that
+                    I find them intrigued and useful (at least for me).</p>
+            </div>
+            <div>
+                <h2 class="general-title">Testing if a Number is even</h2>
+                <p class="paragraph">
+                    While many would use modulus 2, to test a number is even or not, you simply check the least
+                    significant bit (lsb) of the number is 1
+                    (odd) or 0 (even). For example,
+                    \[19283_{10} \land 1 = 1 (odd)\]
+                    \[284_{10} \land 1 = 0 (even)\]
+                </p>
+            </div>
+            <div>
+                <h2 class="general-title">"Fast" Modulus</h2>
+                <p class="paragraph">
+                    This is actually an extension of the knowledge from the last part. In the last section,
+                    <code>AND</code> 1 is used to replaced the modulus of 2, to test if number is even (divisible by 2).
+                </p>
+                <p class="paragraph">But I would like to take this furthur a bit, by understanding that if a number
+                    \(x\) is not divisible by \(y\), the remainder \(r\) of the division will consists of integer in the
+                    range of \(r \in [0,y-1] \). For example, 13 is not divisible by 5, and the remainder is 3, 14 is
+                    not too and remainder yields 4.
+                </p>
+                <p class="paragraph">
+                    Here we observe one pattern, for number that's \(2^n\) where \(n\) is positive integer, if you take
+                    any numbers divided by it, the remainder will be in range of \([0, 2^n - 1]\). For example, is the
+                    divisor is 8, the remainder will be one of \(0, 1, 2, ... 7\).
+                </p>
+                <p class="paragraph">
+                    We can observe, that when getting remainder of a number divided by divisor that's \(2^n\), or
+                    going back to our topic,
+                    <b>to
+                        perform the modulus operation of a number against \(2^n\)</b>, the remainder is actually falls
+                    at those bits that's at position less than \(2^n\). To extract those bits out, simply we can use a
+                    <code>AND</code> operator, or namely
+                    \[x \mod 2^n \equiv x \land 2^n - 1\]
+                </p>
+                <p class="paragraph">The <code>AND</code> \(2^n - 1\) will mask out every bit that's before \(2^n\).
+                    Let's consider the following examples:
+                    $$ 156 \mod 16 = 12 \equiv 156 \land (16 - 1) = 12$$
+                    $$ \begin{array} {|r|r|}\hline & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\ \hline \land & 0 & 0 & 0 & 0 & 1 & 1
+                    & 1 & 1 \\ \hline & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 \\ \hline \end{array}$$
+                </p>
+                <p class="paragraph">So you just turn a long division problem to a bitwise operation. That's the power of 2!</p>
+            </div>
+            <div>
+                <h2 class="general-title">Taking out the least significant 1</h2>
+                <p class="paragraph">
+                    We all know 2's complement, just a reminder, it's used to represent negative number in computers.
+                    Here is the procedure of getting a 2's complement of a number
+                <ol>
+                    <li>
+                        Inverting all bits, e.g. 5 in binary \(0101\), inverting all bits \(1010\)
+                    </li>
+                    <li>
+                        Add 1 to the inverted number, e.g. \(0101 + 1 = 1011\)
+                    </li>
+                </ol>
+                If we take a number and <code>AND</code> with its 2's complement, surprisingly (for me) it will yield
+                the value of the least significant 1 in the number. Let's take 6 for example, its binary is \(0110\) and
+                its 2's complement is \(1010\), performing <code>AND</code> operation as described,
+
+                \begin{array} {|r|r|}\hline & 0 & 1 & 1 & 0 \\ \hline \land & 1 & 0 & 1 & 0 \\ \hline & 0 & 0 & 1 & 0 \\
+                \hline \end{array}
+
+                The result is \(2_{10}\) or \(0010_{2}\), if not surprised, the least significant 1 of 6 is actually at the
+                position where \(2^1\)
+                </p>
+            </div>
+            <div>
+
+            </div>
+        </div>
+
+        <footer>
+            <hr />
+            <small>
+                Jin Yee Chuang | 2023 - <span id="year_now"></span> | No rights reserved | Who cares anyway
+            </small>
+            <hr />
+        </footer>
+        <nav>
+            <span><a href="/">Home</a></span>
+        </nav>
+    </main>
+</body>
+
+<script>
+    const yearContainer = document.getElementById("year_now");
+    yearContainer.innerText = new Date().getFullYear();
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</html>
