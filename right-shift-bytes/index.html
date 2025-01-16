@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jin Yee Chuang | Right shift bytes array</title>
+  <meta name="description" content="Jin Yee Chuang blog. Sharing programming, math, electronics, music and life." />
+  <meta name="keywords"
+    content="jinyee, jin yee, Chuang Jin Yee, Jin Yee Chuang, binary, tricks, Right shift bytes array" />
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="JinYee's Home Page | Bytes To Decimal ">
+  <meta property="og:description" content="Right shift bytes array">
+  <meta property="og:url" content="https://jinyee.org">
+  <meta property="og:image" content="https://jinyee.org/favicon.ico">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="JinYee's Home Page | Right shift bytes array">
+  <meta name="twitter:description" content="Bytes To Decimal">
+  <meta name="twitter:image" content="https://jinyee.org/favicon.ico">
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      font-family: 'Roboto';
+      font-size: 14px;
+    }
+
+    .container {
+      width: 90%;
+      margin: auto;
+      padding: 1rem 2rem;
+    }
+
+    .general-title {
+      text-transform: capitalize;
+    }
+
+    p {
+      text-align: justify;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <nav>
+      <span><a href="/">Home</a></span>
+    </nav>
+    <header>
+      <h1 style="text-transform: capitalize;">Right shift bytes array</h1>
+      <h2>Last Update</h2>
+      <ul>
+        <li>Jan 17 2025 - Initial commit</li>
+      </ul>
+    </header>
+    <div>
+      <div>
+        <h2 class="general-title">Introduction</h2>
+        <p>Treat an array of bytes as a series of bit, with the most significant bit starts from index 0 of the array.
+          How can we shift this bits right by a certained number of bit?</p>
+      </div>
+      <div>
+        <h2 class="general-title">The Code In C</h2>
+        <p class="paragraph">
+        <pre>
+void right_shift_bytes(uint8_t *bytes, size_t length, uint8_t shift_bits)
+{
+  // shouldn't be larger than uint8_t since it's a byte
+	uint8_t carry_over = 0;
+
+  // start from LSB
+	for (int i = length - 1; i >= 0; i--)
+	{
+    // just shift if it's first byte
+		if (i == length - 1)
+			bytes[i] = bytes[i] >> shift_bits;
+		else
+		{
+      // store the carry over of the next byte, here the trick is
+      // (1 << shift_bites) - 1, it will give us a mask of the bits that
+      // we want to carry over
+			carry_over = bytes[i] & ((1 << shift_bits) - 1);
+
+      // add the carry over to the last byte
+			bytes[i + 1] |= carry_over << (8 - shift_bits);
+
+      finally shift the current byte
+			bytes[i] = bytes[i] >> shift_bits;
+		}
+	}
+}
+</pre>
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      <hr />
+      <small>
+        Jin Yee Chuang | 2023 - <span id="year_now"></span> | No rights reserved | Who cares anyway
+      </small>
+      <hr />
+    </footer>
+    <nav>
+      <span><a href="/">Home</a></span>
+    </nav>
+  </main>
+</body>
+
+<script>
+  const yearContainer = document.getElementById("year_now");
+  yearContainer.innerText = new Date().getFullYear();
+</script>
+
+</html>
