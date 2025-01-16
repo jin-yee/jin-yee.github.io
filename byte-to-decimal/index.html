@@ -67,21 +67,12 @@
                     0-th
                     index (first element) of
                     the array is the most significant byte (MSB) and the last element in the array is the least
-                    significant byte (LSB). The length of the array could grow really big, at first it was saying that
-                    16 bytes is needed. So we cannot iterate each bytes and multiply them by 256 and store in the stack,
-                    the stack will definitely overflow.</p>
-                <p>While I'm advised to use ChatGPT to generate the helper function, I found it generated some wrong
-                    code and doesn't understand that the byte's sequence. I found <a
-                        href="https://stackoverflow.com/questions/2423902/convert-an-array-of-bytes-into-one-decimal-number-as-a-string">a
-                        guy from Stack Overflow</a>
-                    answering
-                    this question, but he only provided the overall idea (which I really appreciate) but not code in C.
-                </p>
+                    significant byte (LSB). The length of the array could grow up to 32 bytes. The usual multiply by 256
+                    and carry over method from the LSB will definitely cause the stack overflow.</p>
             </div>
             <div>
                 <h2 class="general-title">The Code in C</h2>
                 <p class="paragraph">
-                    *This code assuming this the bit length is multiple of 8.
                 <pre>
 void bytes_to_dec_string(uint8_t *bytes, uint8_t length, char *output)
 {
