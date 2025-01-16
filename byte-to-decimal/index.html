@@ -57,6 +57,7 @@
             <h2>Last Update</h2>
             <ul>
                 <li>July 28 2024 - Initial commit</li>
+                <li>Jan 17 2025 - Optimised</li>
             </ul>
         </header>
         <div>
@@ -82,59 +83,38 @@
                 <p class="paragraph">
                     *This code assuming this the bit length is multiple of 8.
                 <pre>
-void bytes_to_dec_string(uint8_t *byte_array, int bit_length, char *result)
+void bytes_to_dec_string(uint8_t *bytes, uint8_t length, char *output)
 {
-    uint32_t carry_over = 0;
-    uint8_t current[40] = {0};
-    uint8_t current_size = 0;
-    uint8_t temp[40] = {0};
-    uint8_t *start = NULL;
-    uint8_t byte_length = bit_length / 8;
-    uint8_t j = 0;
-    if (byte_length == 0)
+    if (length > 32 || length <= 0 || bytes == NULL || output == NULL)
         return;
-    // discard all the leading 0s
-    while (*byte_array++ == 0)
+
+    uint8_t i = 0, j = 0, k = 0;
+    uint8_t result[80] = {0};
+    uint32_t carry_over = 0UL;
+
+    while (i < length && bytes[i] == 0)
+        i++;
+
+    while (i < length)
     {
-        byte_length--;
-    }
-    start = --byte_array;
-    for (uint8_t i = 0; i < byte_length; i++)
-    {
-        if (current_size == 0)
-        {
-            current[0] = *start;
-            current_size++;
-            start++;
-            continue;
-        }
+        carry_over = bytes[i++];
         j = 0;
-        carry_over = current[j] * 256;
-        while (carry_over)
+
+        while (carry_over || j < k)
         {
-            temp[j++] = carry_over % 10;
+            carry_over += result[j] * 256;
+            result[j++] = carry_over % 10;
             carry_over /= 10;
         }
-        memcpy(current, temp, j);
-        current_size = j;
-        j = 0;
-        carry_over = current[j] + *start;
-        while (carry_over)
-        {
-            temp[j++] = carry_over % 10;
-            carry_over /= 10;
-            carry_over += current[j];
-        }
-        memcpy(current, temp, j);
-        current_size = j;
-        start++;
+
+        k = j;
     }
-    j = 0;
-    for (int i = current_size; i >= 0; i--)
+
+    for (i = 0; i < k; i++)
     {
-        sprintf(result + j, "%d", current[i]);
-        j++;
+        output[i] = result[k - i - 1] + '0';
     }
+    output[k] = '\0';
 }
 </pre>
                 </p>
