@@ -91,7 +91,7 @@ void right_shift_bytes(uint8_t *bytes, size_t length, uint8_t shift_bits)
       // add the carry over to the last byte
 			bytes[i + 1] |= carry_over << (8 - shift_bits);
 
-      finally shift the current byte
+      // finally shift the current byte
 			bytes[i] = bytes[i] >> shift_bits;
 		}
 	}
